@@ -1,28 +1,46 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <component :is="layout">
+      <router-view />
+    </component>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import LayoutMain from '@/layouts/main/LayoutMain.vue'
+import LayoutEmpty from '@/layouts/empty/LayoutEmpty.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    LayoutMain, LayoutEmpty
+  },
+  data() {
+    return {
+      toJSON: ''
+    }
+  },
+  mounted() {
+    const theme = localStorage.getItem('Sticky-Theme');
+    if(!theme){
+      document.body.classList.toggle('theme-light');
+    } else {
+      document.body.classList.toggle(theme);
+    }
+    
+  },
+  computed: {
+    layout() {
+      if (this.$route.meta.layout === 'main') return 'layout-main'
+      return 'layout-empty'
+    },
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+@import "assets/styles/bootstrap.css";
+@import "assets/styles/style.css";
+@import "assets/fonts/css/fontawesome-all.min.css";
+
 </style>
